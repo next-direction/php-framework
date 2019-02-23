@@ -1,18 +1,24 @@
 {
-    "name": "next-direction/framework",
-    "description": "High performance framework for creating APIs",
-    "type": "project",
-    "authors": [
-        {
-            "name": "Manuel Hesselbarth",
-            "email": "jumper85@email.de"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "NextDirection\\Framework\\": "src/",
-            "NextDirection\\Application\\": "app/"
-        }
-    },
-    "require": {}
+  "name": "next-direction/framework",
+  "description": "High performance framework for creating APIs",
+  "type": "project",
+  "authors": [
+    {
+      "name": "Manuel Hesselbarth",
+      "email": "jumper85@email.de"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "NextDirection\\Framework\\": "src/",
+      "NextDirection\\Application\\": "app/"
+    }
+  },
+  "require": {
+    "ext-json": "*",
+    "ext-mbstring": "*",
+    "ext-readline": "*",
+    "psr/simple-cache": "^1",
+    "filp/whoops": "^2.3"
+  }
 }
