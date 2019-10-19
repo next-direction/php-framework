@@ -5,35 +5,15 @@ namespace NextDirection\Framework\Common;
 class DirectoryInspection {
     
     /**
-     * Return file name and path to all php files in given directory
+     * Return all full qualified class names defined in given file paths
      *
      * @param string $directory
      *
      * @return array
      */
-    public static function getFiles(string $directory): array {
-        $directoryIterator = new \RecursiveDirectoryIterator($directory);
-        $iterator = new \RecursiveIteratorIterator($directoryIterator);
-        $fileIterator = new \RegexIterator($iterator, '/.+\.php$/i', \RecursiveRegexIterator::MATCH);
-        $files = [];
-        
-        /** @var \SplFileInfo $file */
-        foreach ($fileIterator as $file) {
-            $files[] = $file->getPathname();
-        }
-        
-        return $files;
-    }
-    
-    /**
-     * Return all full qualified class names defined in given file paths
-     *
-     * @param array $controllerFiles
-     *
-     * @return array
-     */
-    public static function getFullQualifiedClassNames(array $controllerFiles): array {
+    public static function getFullQualifiedClassNames(string $directory): array {
         $fullQualifiedClassNames = [];
+        $controllerFiles = self::getFiles($directory) ? : [];
         
         foreach ($controllerFiles as $file) {
             $tokens = token_get_all(file_get_contents($file));
@@ -86,5 +66,26 @@ class DirectoryInspection {
         }
         
         return $fullQualifiedClassNames;
+    }
+    
+    /**
+     * Return file name and path to all php files in given directory
+     *
+     * @param string $directory
+     *
+     * @return array
+     */
+    protected static function getFiles(string $directory): array {
+        $directoryIterator = new \RecursiveDirectoryIterator($directory);
+        $iterator = new \RecursiveIteratorIterator($directoryIterator);
+        $fileIterator = new \RegexIterator($iterator, '/.+\.php$/i', \RecursiveRegexIterator::MATCH);
+        $files = [];
+        
+        /** @var \SplFileInfo $file */
+        foreach ($fileIterator as $file) {
+            $files[] = $file->getPathname();
+        }
+        
+        return $files;
     }
 }

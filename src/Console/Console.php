@@ -33,7 +33,17 @@ class Console {
         
         $command = $commands[$commandName];
         
-        return $command->execute();
+        if (in_array('help', $arguments)) {
+            $command->showCommandHelp();
+            
+            return 0;
+        }
+        
+        $startTime = microtime(true);
+        $result = $command->execute($arguments);
+        Output::writeLine(sprintf('Command took %.3f seconds', microtime(true) - $startTime), OutputType::INFO);
+        
+        return $result;
     }
     
     /**
@@ -45,10 +55,10 @@ class Console {
         $frameworkCommandDirectory = __DIR__ . '/../../src/Console/Command';
         $applicationCommandDirectory = $reader->get('commandDirectory');
     
-        $frameworkFiles = DirectoryInspection::getFiles($frameworkCommandDirectory);
-        $applicationFiles = DirectoryInspection::getFiles($applicationCommandDirectory);
-    
-        $fullQualifiedCommandNames = DirectoryInspection::getFullQualifiedClassNames(array_merge($frameworkFiles, $applicationFiles));
+        $fullQualifiedCommandNames = array_merge(
+            DirectoryInspection::getFullQualifiedClassNames($frameworkCommandDirectory),
+            DirectoryInspection::getFullQualifiedClassNames($applicationCommandDirectory)
+        );
     
         $commands = [];
         
@@ -91,5 +101,10 @@ class Console {
             Output::append(str_repeat(' ', self::MAX_COMMAND_LENGTH - mb_strlen($commandName)));
             Output::append($command->getDescription(), OutputType::NORMAL, [OutputStyle::ITALIC]);
         }
+        
+        Output::writeLine('');
+        Output::writeLine('Type "php bin/console.php <command> help" to get help for a specific command!');
+        Output::writeLine('');
+        Output::writeLine('');
     }
 }

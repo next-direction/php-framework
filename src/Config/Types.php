@@ -26,4 +26,11 @@ abstract class Types extends EnumBase {
      * @var string
      */
     public const FILE_CACHE = __DIR__ . '/../../config/fileCache.php';
+    
+    /**
+     * Database configuration
+     *
+     * @var string
+     */
+    public const DB = __DIR__ . '/../../config/db.php';
 }

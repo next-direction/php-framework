@@ -37,8 +37,7 @@ class Router {
      */
     protected function collectAnnotationRoutes(): void {
         $appConfig = new Reader(Types::APP);
-        $controllerFiles = DirectoryInspection::getFiles($appConfig->get('controllerDirectory'));
-        $fullQualifiedClassNames = DirectoryInspection::getFullQualifiedClassNames($controllerFiles);
+        $fullQualifiedClassNames = DirectoryInspection::getFullQualifiedClassNames($appConfig->get('controllerDirectory'));
         
         $prefixRegEx = '/@RoutePrefix=(.*)\s/m';
         $routeRegEx = '/@Route=(.*)\s/m';
